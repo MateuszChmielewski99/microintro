@@ -5,7 +5,7 @@ namespace Actio.Common.Commands
     {
         public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
+        Guid IAuthenticatedCommand.UserId { get; set; }
 
         public string Category { get; set; }
 
