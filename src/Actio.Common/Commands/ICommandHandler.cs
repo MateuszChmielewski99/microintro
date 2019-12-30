@@ -2,8 +2,8 @@
 
 namespace Actio.Common.Commands
 {
-    interface ICommandHandler<in T> where T : ICommand
+    public interface ICommandHandler<in T> where T : ICommand
     {
-        Task HandleAsync();
+        Task HandleAsync(T command);
     }
 }
