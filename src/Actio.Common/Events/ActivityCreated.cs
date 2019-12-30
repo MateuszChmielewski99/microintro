@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Actio.Common.Events
 {
-    class ActivityCreated : IAuthenticatedEvent
+    public class ActivityCreated : IAuthenticatedEvent
     {
         public Guid Id { get; }
 

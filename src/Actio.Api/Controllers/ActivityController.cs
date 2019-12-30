@@ -10,18 +10,23 @@ using RawRabbit.Common;
 namespace Actio.Api.Controllers
 {   
     [Route("[controller]")]
-    public class ActivityController : Controller
+    public class ActivitiesController : Controller
     {   
         private readonly IBusClient _busClient;
-        public ActivityController(IBusClient client) 
+        public ActivitiesController(IBusClient client) 
         {
             this._busClient = client;
         }
 
-        //[HttpPost("")]
-        //public async Task<IActionResult> Post([FromBody] CreateAction command) 
-        //{
-        //    await _busClient.
-        //}
+        [HttpPost("")]
+        public async Task<IActionResult> Post([FromBody] CreateAction command)
+        {
+            command.Id = Guid.NewGuid();
+            command.CreatedAt = DateTime.UtcNow;
+
+            await _busClient.PublishAsync(command);
+
+            return Accepted($"activities/{command.Id}");
+        }
     }
 }
