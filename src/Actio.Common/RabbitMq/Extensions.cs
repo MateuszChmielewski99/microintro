@@ -1,7 +1,6 @@
 ﻿using Actio.Common.Commands;
 using RawRabbit;
 using System.Threading.Tasks;
-using RawRabbit.Pipe;
 using System.Reflection;
 using Actio.Common.Events;
 
@@ -11,7 +10,7 @@ namespace Actio.Common.RabbitMq
     {
         public static async Task WithCommandHandlerAsync<TCommand>(this IBusClient bus, ICommandHandler<TCommand> handler)
             where TCommand : ICommand
-        => await 
+        => await
             bus.SubscribeAsync<TCommand>(msg => handler.HandleAsync(msg),
             ctx => ctx.UseSubscribeConfiguration(cfg =>
             cfg.FromDeclaredQueue(q => q.WithName(GetQueueName<TCommand>()))));
