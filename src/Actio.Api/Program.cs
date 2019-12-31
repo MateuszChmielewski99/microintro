@@ -13,15 +13,13 @@ namespace Actio.Api
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            var builder = await ServiceHost.Create<Startup>(args)
+            ServiceHost.Create<Startup>(args)
                 .UseRabbitMq()
-                .SubscribeToEvent<ActivityCreated>();
-
-            builder.Build().Run();
+                .SubscribeToEvent<ActivityCreated>()
+                .Build()
+                .Run();
         }
-
-        
     }
 }

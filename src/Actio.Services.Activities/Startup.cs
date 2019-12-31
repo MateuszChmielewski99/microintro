@@ -28,9 +28,12 @@ namespace Actio.Services.Activities
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+
+            services.AddMvc();
             services.AddRabbitMq(Configuration);
-            services.AddScoped<ICommandHandler<CreateAction>, CreateActivityHandler>();
+            services.AddTransient<ICommandHandler<CreateAction>, CreateActivityHandler>();
+            
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +43,7 @@ namespace Actio.Services.Activities
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -75,27 +75,27 @@ namespace Actio.Common.Services
                 _bus = bus;
             }
 
-            public async Task<BusBuilder> SubscribeToCommand<TCommand>() where TCommand : ICommand 
+            public BusBuilder SubscribeToCommand<TCommand>() where TCommand : ICommand 
             {
                 var handler = _webHost.Services.GetService(typeof(ICommandHandler<TCommand>)) as ICommandHandler<TCommand>;
 
-                await _bus.WithCommandHandlerAsync(handler);
+                _bus.WithCommandHandlerAsync(handler);
 
                 return this;
             }
 
-            public async Task<BusBuilder> SubscribeToEvent<TEvent>() where TEvent : IEvent
+            public  BusBuilder SubscribeToEvent<TEvent>() where TEvent : IEvent
             {
                 var handler = _webHost.Services.GetService(typeof(IEventHandler<TEvent>)) as IEventHandler<TEvent>;
 
-                await _bus.WithEventHandlerAsync(handler);
+                 _bus.WithEventHandlerAsync(handler);
 
                 return this;
             }
 
             public override ServiceHost Build()
             {
-                throw new NotImplementedException();
+                return new ServiceHost(_webHost);
             }
         }
 
