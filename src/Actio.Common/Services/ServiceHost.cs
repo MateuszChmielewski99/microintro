@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using RawRabbit;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Actio.Common.Services
 {
@@ -36,7 +37,7 @@ namespace Actio.Common.Services
             return new HostBuilder(webHostBuilder.Build());
         }
 
-        public abstract class BuilderBase 
+        public abstract class BuilderBase
         {
             public abstract ServiceHost Build();
         }
@@ -51,7 +52,7 @@ namespace Actio.Common.Services
                 _webHost = webHost;
             }
 
-            public BusBuilder UseRabbitMq() 
+            public BusBuilder UseRabbitMq()
             {
                 _bus = _webHost.Services.GetService(typeof(RawRabbit.IBusClient)) as RawRabbit.IBusClient;
 
@@ -75,20 +76,26 @@ namespace Actio.Common.Services
                 _bus = bus;
             }
 
-            public BusBuilder SubscribeToCommand<TCommand>() where TCommand : ICommand 
+            public BusBuilder SubscribeToCommand<TCommand>() where TCommand : ICommand
             {
-                var handler = _webHost.Services.GetService(typeof(ICommandHandler<TCommand>)) as ICommandHandler<TCommand>;
-
-                _bus.WithCommandHandlerAsync(handler);
+                //  var handler = _webHost.Services.GetService(typeof(ICommandHandler<TCommand>)) as ICommandHandler<TCommand>;
+                using (var scope = _webHost.Services.CreateScope())
+                {
+                    var handler =
+                        scope.ServiceProvider.GetService<ICommandHandler<TCommand>>();
+                    _bus.WithCommandHandlerAsync(handler);
+                }
 
                 return this;
             }
 
-            public  BusBuilder SubscribeToEvent<TEvent>() where TEvent : IEvent
+            public BusBuilder SubscribeToEvent<TEvent>() where TEvent : IEvent
             {
-                var handler = _webHost.Services.GetService(typeof(IEventHandler<TEvent>)) as IEventHandler<TEvent>;
-
-                 _bus.WithEventHandlerAsync(handler);
+                using (var scope = _webHost.Services.CreateScope())
+                {
+                    var handler = scope.ServiceProvider.GetService<IEventHandler<TEvent>>();
+                    _bus.WithEventHandlerAsync(handler);
+                }
 
                 return this;
             }
@@ -98,6 +105,5 @@ namespace Actio.Common.Services
                 return new ServiceHost(_webHost);
             }
         }
-
     }
 }

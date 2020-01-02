@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Actio.Common.Exceptions;
 
 namespace Actio.Common.Domain.Models
 {
@@ -22,6 +23,11 @@ namespace Actio.Common.Domain.Models
 
         public Activity(Guid id, Guid userId, string name, string categoty, string description, DateTime createdAt)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ActioException("empty_name_field", "Filed name cannot be empty");
+            }
+
             Id = id;
             UserId = userId;
             Name = name;
