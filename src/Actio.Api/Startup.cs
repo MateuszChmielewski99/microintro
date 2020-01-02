@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Actio.Api.Handlers;
 using Actio.Common.Commands;
 using Actio.Common.Events;
+using Actio.Common.Mongo;
 using Actio.Common.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
