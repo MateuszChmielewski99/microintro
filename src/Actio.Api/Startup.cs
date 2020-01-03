@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Actio.Api.Handlers;
+using Actio.Common.Auth;
 using Actio.Common.Commands;
 using Actio.Common.Events;
 using Actio.Common.Mongo;
@@ -33,6 +34,7 @@ namespace Actio.Api
             services.AddMvc();
             services.AddRabbitMq(Configuration);
             services.AddTransient<IEventHandler<ActivityCreated>, ActivityCreatedHandler>();
+            services.AddJwt(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
