@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Actio.Common.Commands;
 using Actio.Common.Domain.Repositories;
 using Actio.Common.Mongo;
@@ -18,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+
 
 namespace Actio.Services.Activities
 {
@@ -55,7 +52,6 @@ namespace Actio.Services.Activities
             }
 
             app.InitializeDatabase(provider);
-
 
             app.UseHttpsRedirection();
 
