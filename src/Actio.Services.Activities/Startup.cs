@@ -34,16 +34,16 @@ namespace Actio.Services.Activities
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddMvc();
+            services.AddScoped<ILogger,Logger<Startup>>();
             services.AddRabbitMq(Configuration);
             services.AddMongoDb(Configuration);
-            services.AddTransient<ICommandHandler<CreateAction>, CreateActivityHandler>();
+            services.AddScoped<ICommandHandler<CreateAction>, CreateActivityHandler>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IDatabaseSeeder, CustomMongoSeeder>();
             services.AddScoped<IDatabaseInitializer, MongoInitializer>();
-           
+            services.AddScoped<IActivityService, ActivityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,10 +63,7 @@ namespace Actio.Services.Activities
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
